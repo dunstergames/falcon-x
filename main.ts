@@ -283,7 +283,7 @@ highSpeed.setColor(2, 15)
 highSpeed.setLabel("S", 15)
 currentAltitude = statusbars.create(6, 100, StatusBarKind.Altitude)
 currentAltitude.setBarBorder(1, 15)
-currentAltitude.left = 20
+currentAltitude.left = 21
 currentAltitude.setColor(15, 11)
 currentAltitude.max = 1988
 currentAltitude.setStatusBarFlag(StatusBarFlag.InvertFillDirection, true)
