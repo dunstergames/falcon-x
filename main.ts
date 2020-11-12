@@ -4,6 +4,7 @@ namespace SpriteKind {
 namespace StatusBarKind {
     export const Fuel = StatusBarKind.create()
     export const Speed = StatusBarKind.create()
+    export const Altitude = StatusBarKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, myTiles.tile2, function (sprite, location) {
     if (falcon.vy > crashSpeed) {
@@ -246,11 +247,6 @@ target = sprites.create(img`
     `, SpriteKind.Target)
 target.setFlag(SpriteFlag.RelativeToCamera, true)
 target.setPosition(landingView.x, landingView.y)
-let altitude = textsprite.create("Alt:", 15, 1)
-altitude.setBorder(1, 15, 1)
-altitude.setFlag(SpriteFlag.RelativeToCamera, true)
-altitude.bottom = landingView.top
-altitude.left = landingView.left
 fuelLevel = statusbars.create(6, 100, StatusBarKind.Fuel)
 fuelLevel.setBarBorder(1, 15)
 fuelLevel.left = 3
@@ -266,9 +262,15 @@ highSpeed.left = 12
 highSpeed.bottom = lowSpeed.top
 highSpeed.max = 500 - crashSpeed
 highSpeed.setColor(2, 15)
+let currentAltitude = statusbars.create(6, 100, StatusBarKind.Altitude)
+currentAltitude.setBarBorder(1, 15)
+currentAltitude.left = 20
+currentAltitude.setColor(15, 11)
+currentAltitude.max = 1988
+currentAltitude.setStatusBarFlag(StatusBarFlag.InvertFillDirection, true)
 game.onUpdateInterval(100, function () {
     target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
-    altitude.setText("Alt:" + Math.map(scene.cameraProperty(CameraProperty.Y), 0, 1988, 1988, 0))
+    currentAltitude.value = scene.cameraProperty(CameraProperty.Y)
     lowSpeed.value = Math.ceil(falcon.vy)
     highSpeed.value = Math.ceil(falcon.vy) - crashSpeed
     falcon.vx = Math.constrain(controller.acceleration(ControllerDimension.X), -50, 50)
