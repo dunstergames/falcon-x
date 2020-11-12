@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const Target = SpriteKind.create()
+}
 scene.onOverlapTile(SpriteKind.Player, myTiles.tile2, function (sprite, location) {
     if (falcon.vy > 300) {
         game.over(false)
@@ -158,6 +161,77 @@ falcon = sprites.create(img`
     . . f . . . . f . . . . f . . . 
     `, SpriteKind.Player)
 scene.cameraFollowSprite(falcon)
+let landingView = sprites.create(img`
+    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888bbbbbbbbbbbbbbbbbbbbbbb8888888888888888888f
+    f88888888888888888888bbbbbbbbbbbbbbbbbbbbbbb8888888888888888888f
+    f88888888888888888888bbbbbbbbbbbbbbbbbbbbbbb8888888888888888888f
+    f88888888888888888888bbbbbbbbbbbbbbbbbbbbbbb8888888888888888888f
+    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    f88888888888888888888bbbbbbbbbbbbbbbbbbbbbbb8888888888888888888f
+    f88888888888888888888bbbbbbbbbbbbbbbbbbbbbbb8888888888888888888f
+    f88888888888888888888bbbbbbbbbbbbbbbbbbbbbbb8888888888888888888f
+    f88888888888888888888bbbbbbbbbbbbbbbbbbbbbbb8888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    f88888888888888888888888888888888888888888888888888888888888888f
+    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    `, SpriteKind.Player)
+landingView.setFlag(SpriteFlag.RelativeToCamera, true)
+landingView.right = scene.screenWidth()
+landingView.bottom = scene.screenHeight()
+let target = sprites.create(img`
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    . . . . f . . . . 
+    `, SpriteKind.Target)
+target.setFlag(SpriteFlag.RelativeToCamera, true)
+target.setPosition(landingView.x, landingView.y)
 game.onUpdateInterval(500, function () {
     falcon.vx = Math.constrain(controller.acceleration(ControllerDimension.X), -50, 50)
     if (controller.A.isPressed()) {
@@ -165,4 +239,7 @@ game.onUpdateInterval(500, function () {
     } else {
         falcon.ay = 100
     }
+})
+game.onUpdateInterval(100, function () {
+    target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
 })
