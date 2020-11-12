@@ -1,5 +1,6 @@
 namespace SpriteKind {
     export const Target = SpriteKind.create()
+    export const Text = SpriteKind.create()
 }
 namespace StatusBarKind {
     export const Fuel = StatusBarKind.create()
@@ -271,6 +272,7 @@ currentAltitude.setColor(15, 11)
 currentAltitude.max = 1988
 currentAltitude.setStatusBarFlag(StatusBarFlag.InvertFillDirection, true)
 currentAltitude.setLabel("A", 15)
+game.splash("Falcon X", "Tilt to move. A to boost.")
 game.onUpdateInterval(100, function () {
     target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
     currentAltitude.value = scene.cameraProperty(CameraProperty.Y)
