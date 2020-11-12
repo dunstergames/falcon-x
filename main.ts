@@ -250,6 +250,7 @@ target.setPosition(landingView.x, landingView.y)
 fuelLevel = statusbars.create(6, 100, StatusBarKind.Fuel)
 fuelLevel.setBarBorder(1, 15)
 fuelLevel.left = 3
+fuelLevel.setLabel("F", 15)
 let lowSpeed = statusbars.create(6, 40, StatusBarKind.Speed)
 lowSpeed.setBarBorder(1, 15)
 lowSpeed.left = 12
@@ -259,15 +260,17 @@ lowSpeed.setColor(7, 15)
 let highSpeed = statusbars.create(6, 60, StatusBarKind.Speed)
 highSpeed.setBarBorder(1, 15)
 highSpeed.left = 12
-highSpeed.bottom = lowSpeed.top
+highSpeed.top = fuelLevel.top
 highSpeed.max = 500 - crashSpeed
 highSpeed.setColor(2, 15)
+highSpeed.setLabel("S", 15)
 let currentAltitude = statusbars.create(6, 100, StatusBarKind.Altitude)
 currentAltitude.setBarBorder(1, 15)
 currentAltitude.left = 20
 currentAltitude.setColor(15, 11)
 currentAltitude.max = 1988
 currentAltitude.setStatusBarFlag(StatusBarFlag.InvertFillDirection, true)
+currentAltitude.setLabel("A", 15)
 game.onUpdateInterval(100, function () {
     target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
     currentAltitude.value = scene.cameraProperty(CameraProperty.Y)
