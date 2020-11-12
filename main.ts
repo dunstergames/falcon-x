@@ -233,10 +233,12 @@ let target = sprites.create(img`
 target.setFlag(SpriteFlag.RelativeToCamera, true)
 target.setPosition(landingView.x, landingView.y)
 let altitude = textsprite.create("Alt:", 15, 1)
+altitude.setBorder(1, 15, 1)
 altitude.setFlag(SpriteFlag.RelativeToCamera, true)
 altitude.bottom = landingView.top
 altitude.left = landingView.left
 let speed = textsprite.create("Spd:", 15, 1)
+speed.setBorder(1, 15, 1)
 speed.setFlag(SpriteFlag.RelativeToCamera, true)
 speed.bottom = altitude.top
 speed.left = altitude.left
@@ -252,4 +254,9 @@ game.onUpdateInterval(100, function () {
     target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
     altitude.setText("Alt:" + Math.map(scene.cameraProperty(CameraProperty.Y), 0, 1988, 1988, 0))
     speed.setText("Spd:" + Math.ceil(falcon.vy))
+    if (falcon.vy > 300) {
+        speed.setBorder(1, 2, 1)
+    } else {
+        speed.setBorder(1, 15, 1)
+    }
 })
