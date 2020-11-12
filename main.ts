@@ -1,6 +1,9 @@
 namespace SpriteKind {
     export const Target = SpriteKind.create()
 }
+namespace StatusBarKind {
+    export const Fuel = StatusBarKind.create()
+}
 scene.onOverlapTile(SpriteKind.Player, myTiles.tile2, function (sprite, location) {
     if (falcon.vy > crashSpeed) {
         game.over(false)
@@ -244,14 +247,9 @@ speed.setBorder(1, 15, 1)
 speed.setFlag(SpriteFlag.RelativeToCamera, true)
 speed.bottom = altitude.top
 speed.left = altitude.left
-game.onUpdateInterval(500, function () {
-    falcon.vx = Math.constrain(controller.acceleration(ControllerDimension.X), -50, 50)
-    if (controller.A.isPressed()) {
-        falcon.ay = -100
-    } else {
-        falcon.ay = 100
-    }
-})
+let fuel = statusbars.create(6, 100, StatusBarKind.Fuel)
+fuel.setBarBorder(1, 15)
+fuel.left = 3
 game.onUpdateInterval(100, function () {
     target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
     altitude.setText("Alt:" + Math.map(scene.cameraProperty(CameraProperty.Y), 0, 1988, 1988, 0))
@@ -260,5 +258,12 @@ game.onUpdateInterval(100, function () {
         speed.setBorder(1, 2, 1)
     } else {
         speed.setBorder(1, 15, 1)
+    }
+    falcon.vx = Math.constrain(controller.acceleration(ControllerDimension.X), -50, 50)
+    if (controller.A.isPressed() && fuel.value > 0) {
+        falcon.ay = -100
+        fuel.value += -1
+    } else {
+        falcon.ay = 100
     }
 })
