@@ -20,8 +20,24 @@ scene.onOverlapTile(SpriteKind.Player, myTiles.tile2, function (sprite, location
 scene.onOverlapTile(SpriteKind.Player, myTiles.tile4, function (sprite, location) {
     game.over(false)
 })
+function gameUpdate () {
+    target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
+    currentAltitude.value = scene.cameraProperty(CameraProperty.Y)
+    lowSpeed.value = Math.ceil(falcon.vy)
+    highSpeed.value = Math.ceil(falcon.vy) - crashSpeed
+    falcon.vx = Math.constrain(controller.acceleration(ControllerDimension.X), -50, 50)
+    if (controller.A.isPressed() && fuelLevel.value > 0) {
+        falcon.ay = -200
+        fuelLevel.value += -1
+    } else {
+        falcon.ay = 100
+    }
+}
 let scorePenalty = 0
 let fromCentre = 0
+let currentAltitude: StatusBarSprite = null
+let highSpeed: StatusBarSprite = null
+let lowSpeed: StatusBarSprite = null
 let fuelLevel: StatusBarSprite = null
 let target: Sprite = null
 let landingView: Sprite = null
@@ -252,37 +268,28 @@ fuelLevel = statusbars.create(6, 100, StatusBarKind.Fuel)
 fuelLevel.setBarBorder(1, 15)
 fuelLevel.left = 3
 fuelLevel.setLabel("F", 15)
-let lowSpeed = statusbars.create(6, 40, StatusBarKind.Speed)
+lowSpeed = statusbars.create(6, 40, StatusBarKind.Speed)
 lowSpeed.setBarBorder(1, 15)
 lowSpeed.left = 12
 lowSpeed.bottom = fuelLevel.bottom
 lowSpeed.max = crashSpeed
 lowSpeed.setColor(7, 15)
-let highSpeed = statusbars.create(6, 60, StatusBarKind.Speed)
+highSpeed = statusbars.create(6, 60, StatusBarKind.Speed)
 highSpeed.setBarBorder(1, 15)
 highSpeed.left = 12
 highSpeed.top = fuelLevel.top
 highSpeed.max = 500 - crashSpeed
 highSpeed.setColor(2, 15)
 highSpeed.setLabel("S", 15)
-let currentAltitude = statusbars.create(6, 100, StatusBarKind.Altitude)
+currentAltitude = statusbars.create(6, 100, StatusBarKind.Altitude)
 currentAltitude.setBarBorder(1, 15)
 currentAltitude.left = 20
 currentAltitude.setColor(15, 11)
 currentAltitude.max = 1988
 currentAltitude.setStatusBarFlag(StatusBarFlag.InvertFillDirection, true)
 currentAltitude.setLabel("A", 15)
+gameUpdate()
 game.splash("Falcon X", "Tilt to move. A to boost.")
 game.onUpdateInterval(100, function () {
-    target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
-    currentAltitude.value = scene.cameraProperty(CameraProperty.Y)
-    lowSpeed.value = Math.ceil(falcon.vy)
-    highSpeed.value = Math.ceil(falcon.vy) - crashSpeed
-    falcon.vx = Math.constrain(controller.acceleration(ControllerDimension.X), -50, 50)
-    if (controller.A.isPressed() && fuelLevel.value > 0) {
-        falcon.ay = -200
-        fuelLevel.value += -1
-    } else {
-        falcon.ay = 100
-    }
+    gameUpdate()
 })
