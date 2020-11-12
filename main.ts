@@ -3,6 +3,7 @@ namespace SpriteKind {
 }
 namespace StatusBarKind {
     export const Fuel = StatusBarKind.create()
+    export const Speed = StatusBarKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, myTiles.tile2, function (sprite, location) {
     if (falcon.vy > crashSpeed) {
@@ -10,7 +11,7 @@ scene.onOverlapTile(SpriteKind.Player, myTiles.tile2, function (sprite, location
     } else {
         fromCentre = Math.abs(landingView.x - target.x)
         scorePenalty = 130 - fromCentre * 10
-        info.setScore(fuel.value * scorePenalty)
+        info.setScore(fuelLevel.value * scorePenalty)
         game.over(true)
     }
 })
@@ -19,7 +20,7 @@ scene.onOverlapTile(SpriteKind.Player, myTiles.tile4, function (sprite, location
 })
 let scorePenalty = 0
 let fromCentre = 0
-let fuel: StatusBarSprite = null
+let fuelLevel: StatusBarSprite = null
 let target: Sprite = null
 let landingView: Sprite = null
 let falcon: Sprite = null
@@ -250,27 +251,30 @@ altitude.setBorder(1, 15, 1)
 altitude.setFlag(SpriteFlag.RelativeToCamera, true)
 altitude.bottom = landingView.top
 altitude.left = landingView.left
-let speed = textsprite.create("Spd:", 15, 1)
-speed.setBorder(1, 15, 1)
-speed.setFlag(SpriteFlag.RelativeToCamera, true)
-speed.bottom = altitude.top
-speed.left = altitude.left
-fuel = statusbars.create(6, 100, StatusBarKind.Fuel)
-fuel.setBarBorder(1, 15)
-fuel.left = 3
+fuelLevel = statusbars.create(6, 100, StatusBarKind.Fuel)
+fuelLevel.setBarBorder(1, 15)
+fuelLevel.left = 3
+let lowSpeed = statusbars.create(6, 40, StatusBarKind.Speed)
+lowSpeed.setBarBorder(1, 15)
+lowSpeed.left = 12
+lowSpeed.bottom = fuelLevel.bottom
+lowSpeed.max = crashSpeed
+lowSpeed.setColor(7, 15)
+let highSpeed = statusbars.create(6, 60, StatusBarKind.Speed)
+highSpeed.setBarBorder(1, 15)
+highSpeed.left = 12
+highSpeed.bottom = lowSpeed.top
+highSpeed.max = 500 - crashSpeed
+highSpeed.setColor(2, 15)
 game.onUpdateInterval(100, function () {
     target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
     altitude.setText("Alt:" + Math.map(scene.cameraProperty(CameraProperty.Y), 0, 1988, 1988, 0))
-    speed.setText("Spd:" + Math.ceil(falcon.vy))
-    if (falcon.vy > crashSpeed) {
-        speed.setBorder(1, 2, 1)
-    } else {
-        speed.setBorder(1, 15, 1)
-    }
+    lowSpeed.value = Math.ceil(falcon.vy)
+    highSpeed.value = Math.ceil(falcon.vy) - crashSpeed
     falcon.vx = Math.constrain(controller.acceleration(ControllerDimension.X), -50, 50)
-    if (controller.A.isPressed() && fuel.value > 0) {
+    if (controller.A.isPressed() && fuelLevel.value > 0) {
         falcon.ay = -200
-        fuel.value += -1
+        fuelLevel.value += -1
     } else {
         falcon.ay = 100
     }
