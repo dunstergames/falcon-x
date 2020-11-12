@@ -236,6 +236,10 @@ let altitude = textsprite.create("Alt:", 15, 1)
 altitude.setFlag(SpriteFlag.RelativeToCamera, true)
 altitude.bottom = landingView.top
 altitude.left = landingView.left
+let speed = textsprite.create("Spd:", 15, 1)
+speed.setFlag(SpriteFlag.RelativeToCamera, true)
+speed.bottom = altitude.top
+speed.left = altitude.left
 game.onUpdateInterval(500, function () {
     falcon.vx = Math.constrain(controller.acceleration(ControllerDimension.X), -50, 50)
     if (controller.A.isPressed()) {
@@ -247,4 +251,5 @@ game.onUpdateInterval(500, function () {
 game.onUpdateInterval(100, function () {
     target.x = Math.map(falcon.x, 0, 256, scene.screenWidth() - landingView.width, scene.screenWidth())
     altitude.setText("Alt:" + Math.map(scene.cameraProperty(CameraProperty.Y), 0, 1988, 1988, 0))
+    speed.setText("Spd:" + Math.ceil(falcon.vy))
 })
