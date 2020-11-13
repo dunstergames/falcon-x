@@ -815,7 +815,7 @@ target.setPosition(landingView.x, landingView.y)
 fuelLevel = statusbars.create(6, 100, StatusBarKind.Fuel)
 fuelLevel.setBarBorder(1, 15)
 fuelLevel.left = 3
-fuelLevel.setLabel("F", 15)
+fuelLevel.setLabel("F", 13)
 lowSpeed = statusbars.create(6, 40, StatusBarKind.Speed)
 lowSpeed.setBarBorder(1, 15)
 lowSpeed.left = 12
@@ -828,14 +828,14 @@ highSpeed.left = 12
 highSpeed.top = fuelLevel.top
 highSpeed.max = 500 - crashSpeed
 highSpeed.setColor(2, 15)
-highSpeed.setLabel("S", 15)
+highSpeed.setLabel("S", 13)
 currentAltitude = statusbars.create(6, 100, StatusBarKind.Altitude)
 currentAltitude.setBarBorder(1, 15)
 currentAltitude.left = 21
 currentAltitude.setColor(15, 11)
 currentAltitude.max = 1988
 currentAltitude.setStatusBarFlag(StatusBarFlag.InvertFillDirection, true)
-currentAltitude.setLabel("A", 15)
+currentAltitude.setLabel("A", 13)
 gameUpdate()
 game.splash("Falcon X", "Tilt to move. A to boost.")
 isPlaying = true
