@@ -5,7 +5,9 @@
     "dependencies": {
         "device": "*",
         "controller": "*",
-        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.3.1"
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.3.1",
+        "animation": "*",
+        "story": "github:riknoll/arcade-story#v1.2.0"
     },
     "files": [
         "README.md",
